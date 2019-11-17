@@ -6,6 +6,7 @@ use App\Http\Requests\PostRequest;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -42,8 +43,21 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        $post = $request->all();
-        $save = Post::create($post);
+        //eloquentORM
+        // $post = $request->all();
+        // $save = Post::create($post);
+        $save = Post::create([
+            'title' => $request->title,
+            'description'=>$request->description,
+            'user_id' =>$request->user_id
+        ]);
+        
+        //querybuilder
+        // $save = DB::table('posts')->insert([
+        //     'title' => $request->title,
+        //     'description'=>$request->description,
+        //     'user_id' =>$request->user_id
+        // ]);
         if($save){
             return redirect('post');
         }
@@ -69,7 +83,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id)->first();
+        dd($post);
     }
 
     /**
@@ -92,6 +107,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }
