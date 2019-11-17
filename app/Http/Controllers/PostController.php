@@ -51,7 +51,7 @@ class PostController extends Controller
             'description'=>$request->description,
             'user_id' =>$request->user_id
         ]);
-        
+
         //querybuilder
         // $save = DB::table('posts')->insert([
         //     'title' => $request->title,
@@ -83,8 +83,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id)->first();
-        dd($post);
+        $posts = Post::where('id',$id)->first();
+        $users = User::all();
+        return view('post.edit',compact('posts','users'));
     }
 
     /**
@@ -94,9 +95,19 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        //
+
+        $post = Post::where('id',$id)->first();
+        $update = $post->update([
+            'title' => $request->title,
+            'description'=> $request->description,
+            'user_id' => $request->user_id
+        ]);
+        if ($update) {
+            return redirect('post');
+        }
+        return redirect()->back()->with('error','Gagal Mengubah Post');
     }
 
     /**
@@ -107,6 +118,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-
+        $post = Post::where('id',$id)->first();
+        $delete = $post->delete();
+        if ($delete) {
+            return redirect('post');
+        }
+        return redirect('post')->with('error','Gagal Menghapus Post');
     }
 }
