@@ -1,11 +1,22 @@
 @extends('template.master')
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+            <h3>Terjadi Kesalahan</h3>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="card border-primary">
     <div class="card-header bg-primary text-white">
         <h3 class="text-center"><i class="fa fa-plus"></i> Tambah Post</h3>
     </div>
     <div class="card-body text-center">
-        <form action="">
+        <form action="{{route('post.store')}}" method="POST">
+            @csrf
             <div class="form-group">
                 <div class="row mt-2">
                     <div class="col-4">
@@ -20,7 +31,7 @@
                         <label for="desc">Description</label>
                     </div>
                     <div class="col-8">
-                        <textarea name="desc" id="desc" class="form-control"></textarea>
+                        <textarea name="description" id="desc" class="form-control"></textarea>
                     </div>
                 </div>
 

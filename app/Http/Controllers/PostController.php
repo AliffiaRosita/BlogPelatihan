@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class PostController extends Controller
     public function create()
     {
         $users = User::all();
-        
+
         return view('post.create',compact('users'));
     }
 
@@ -39,9 +40,14 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $post = $request->all();
+        $save = Post::create($post);
+        if($save){
+            return redirect('post');
+        }
+         return redirect()->back()->with('error','Gagal Menambah Data');
     }
 
     /**

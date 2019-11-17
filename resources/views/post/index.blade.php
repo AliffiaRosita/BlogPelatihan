@@ -21,6 +21,8 @@
     </thead>
     <tbody class="text-center">
         @foreach ($postss as $item)
+        <tr>
+
             <td>{{$item->id}}</td>
             <td>{{$item->title}}</td>
             <td>{{str_limit($item->description)}}</td>
@@ -30,6 +32,7 @@
                     @method('DETELE')
                     <button class="btn btn-danger" type="submit"> <i class="fa fa-trash"></i></button>
                 </form></td>
+            </tr>
         @endforeach
 
     </tbody>
